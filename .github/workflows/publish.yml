@@ -20,7 +20,7 @@ jobs:
           submodules: recursive
       - uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18
       - uses: actions/cache@v2
         env:
           cache-name: cache-nodemodules
@@ -52,6 +52,7 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.TDESIGN_NPM_TOKEN }}
+          tag: ${{ contains(github.ref_name, 'beta') && 'beta' || 'latest' }}
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
